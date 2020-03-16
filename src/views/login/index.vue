@@ -8,15 +8,15 @@
         <span class="titlelogin">用户登录</span>
       </div>
       <!-- form 表单 -->
-      <el-form ref="form" :model="form" label-width="80px">
+      <el-form ref="form" :rules="rules" :model="form" label-width="80px">
         <el-form-item label-width="0">
           <el-input v-model="form.phone" prefix-icon="el-icon-user" placeholder="请输入手机号"></el-input>
         </el-form-item>
-        <el-form-item label-width="0">
+        <el-form-item label-width="0" prop="password">
           <el-input v-model="form.password" prefix-icon="el-icon-lock" placeholder="请输入密码"></el-input>
         </el-form-item>
-        <el-form-item label-width="0" class="checkCodeBox">
-          <el-row>
+        <el-form-item label-width="0" prop="checkCode">
+          <el-row class="checkCode">
             <el-col :span="16">
               <el-input v-model="form.checkCode" prefix-icon="el-icon-key" placeholder="请输入验证码"></el-input>
             </el-col>
@@ -25,8 +25,8 @@
             </el-col>
           </el-row>
         </el-form-item>
-        <el-form-item label-width="0" class="isChecked">
-          <el-checkbox-group v-model="form.isChecked">
+        <el-form-item label-width="0" prop="isChecked">
+          <el-checkbox-group v-model="form.isChecked" class="isChecked">
             <el-checkbox name="type">
               我已阅读并同意
               <el-link type="primary">用户协议</el-link>和
@@ -53,13 +53,41 @@ export default {
         phone: "", //手机号码
         password: "", //密码
         checkCode: "", //验证码
-        isChecked: false //是否阅读
+        isChecked: [] //是否阅读
+      },
+      rules: {
+        password: [
+          { required: true, message: "密码不能为空", trigger: "blur" },
+          { min: 5, max: 10, message: "密码长度为5~10个字符", trigger: "blur" }
+        ],
+        checkCode: [
+          { required: true, message: "验证码不能为空", trigger: "blur" },
+          { min: 5, max: 5, message: "密码长度为5", trigger: "blur" }
+        ],
+        isChecked: [
+          {
+            type: "array",
+            required: true,
+            message: "请阅读并勾选协议！",
+            trigger: "change"
+          }
+        ]
       }
     };
   },
   methods: {
     onSubmit() {
-      console.log("submit!");
+      this.$refs.form.validate(valid => {
+        if (valid) {
+          this.$message({
+            message: "验证成功！",
+            type: "success"
+          });
+        } else {
+          this.$message.error("验证失败！");
+          return false;
+        }
+      });
     }
   }
 };
@@ -114,16 +142,18 @@ export default {
         color: rgba(12, 12, 12, 1);
       }
     }
-    .checkCodeBox {
-      margin-bottom: 0px;
+    .checkCode {
+      line-height: 0;
       .checkImg {
         width: 110px;
         height: 42px;
       }
     }
+
     .isChecked {
-      margin-bottom: 0px;
+      line-height: 0;
     }
+
     .btnstyle {
       width: 100%;
     }
