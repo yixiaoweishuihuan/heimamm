@@ -38,15 +38,23 @@
           <el-button class="btnstyle" type="primary" @click="onSubmit">登录</el-button>
         </el-form-item>
         <el-form-item label-width="0">
-          <el-button class="btnstyle" type="primary">注册</el-button>
+          <el-button class="btnstyle" type="primary" @click="register">注册</el-button>
         </el-form-item>
       </el-form>
     </div>
     <img src="../../assets/images/rightimg.png" alt class="rightimg" />
+    <!-- 使用 注册组件 -->
+    <register ref="register"></register>
   </div>
 </template>
 <script>
+//导入注册组件
+import register from "./components/register";
 export default {
+  //注册
+  components: {
+    register
+  },
   data() {
     return {
       form: {
@@ -76,6 +84,7 @@ export default {
     };
   },
   methods: {
+    //登录
     onSubmit() {
       this.$refs.form.validate(valid => {
         if (valid) {
@@ -88,6 +97,10 @@ export default {
           return false;
         }
       });
+    },
+    //注册
+    register() {
+      this.$refs.register.dialogFormVisible = true;
     }
   }
 };

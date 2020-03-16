@@ -3,8 +3,6 @@ import Vue from 'vue'
 
 //导入login组件
 import login from '../views/login/index.vue'
-//导入 useElement 组件
-import useElement from '../views/useElement/index.vue'
 
 //导入  vue-router
 import VueRouter from 'vue-router'
@@ -15,10 +13,6 @@ const router = new VueRouter({
     routes: [{
             path: '/login',
             component: login
-        },
-        {
-            path:'/useElement',
-            component:useElement
         },
         {
             //路由重定向
