@@ -70,7 +70,7 @@ export default {
         ],
         checkCode: [
           { required: true, message: "验证码不能为空", trigger: "blur" },
-          { min: 5, max: 5, message: "密码长度为5", trigger: "blur" }
+          { min: 4, max: 4, message: "密码长度为4", trigger: "blur" }
         ],
         isChecked: [
           {

@@ -4,6 +4,7 @@ import Vue from 'vue'
 import App from './App.vue'
 //导入全局css
 import './style/index.css'
+
 //导入 element-ui
 import ElementUI from 'element-ui';
 //导入 element-ui 的css

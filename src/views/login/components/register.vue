@@ -20,7 +20,7 @@
               <el-input v-model="form.code" autocomplete="off"></el-input>
             </el-col>
             <el-col :span="7" class="code">
-              <img class="codeImg" src="../../../assets/images/login_captcha.png" alt />
+              <img class="codeImg" @click="changeImg" :src="imgUrl" alt />
             </el-col>
           </el-row>
         </el-form-item>
@@ -30,29 +30,36 @@
               <el-input v-model="form.checkCode" autocomplete="off"></el-input>
             </el-col>
             <el-col :span="7" class="btnstyle">
-              <button class="btn">获取用户验证码</button>
+              <button class="btn" @click.prevent="getNum" :disabled="time!==0">{{time===0?"获取用户验证码":time}}</button>
             </el-col>
           </el-row>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="checkMsg">确 定</el-button>
+        <el-button @click.prevent="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click.prevent="checkMsg">确 定</el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 <script>
+//导入 apiGetCode 方法
+import apiGetCode from "../../../api/regidter";
+// 定义校验方法
+// 定义一个邮箱的正则
 var checkEmail = (rule, value, callback) => {
   var reg = /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/;
+  // 验证参数的合法
   if (reg.test(value)) {
     callback();
   } else {
     callback(new Error("邮箱不合法"));
   }
 };
+// 定义一个手机的正则
 var checkPhone = (rule, value, callback) => {
   var reg = /^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/;
+  // 验证参数的合法
   if (reg.test(value)) {
     callback();
   } else {
@@ -102,14 +109,21 @@ export default {
           { min: 5, max: 5, message: "密码长度为5个字符", trigger: "blur" }
         ]
       },
-      formLabelWidth: "87.3px"
+      formLabelWidth: "87.3px",
+      imgUrl:
+        process.env.VUE_APP_ONLINEURL +
+        "/captcha?type=sendsms&time=" +
+        Date.now(), //图片验证码
+      tiemID: null, //定时器
+      time: 0
     };
   },
   methods: {
+    //点击确定按钮验证
     checkMsg() {
       this.$refs.form.validate(valid => {
         if (valid) {
-          this.dialogFormVisible = false;
+          // this.dialogFormVisible = false;
           this.$message({
             message: "恭喜你，注册成功",
             type: "success"
@@ -119,6 +133,39 @@ export default {
           return false;
         }
       });
+    },
+    //切换图片验证码
+    changeImg() {
+      this.imgUrl =
+        process.env.VUE_APP_ONLINEURL +
+        "/captcha?type=sendsms&time=" +
+        Date.now();
+    },
+    //点击获取验证码按钮 获取短信验证码
+    getNum() {
+      // 将时间设置为 60s
+      this.time = 60;
+      // 添加一个定时器：判断当前按钮是否可以点击
+      this.timeID = setInterval(() => {
+        if (this.time > 0) {
+          this.time--;
+        }
+        // 当时间为0时，定时器清空
+        if (this.time === 0) {
+          clearInterval();
+        }
+      }, 1000);
+      //获取短信验证码
+      apiGetCode({
+        code: this.form.code,
+        phone: this.form.phone
+      })
+        .then(res => {
+          window.console.log(res);
+        })
+        .catch(err => {
+          window.console.log(err);
+        });
     }
   }
 };
