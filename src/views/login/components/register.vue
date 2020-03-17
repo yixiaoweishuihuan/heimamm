@@ -12,7 +12,7 @@
           <el-input v-model="form.phone" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="密码" :label-width="formLabelWidth" prop="password">
-          <el-input v-model="form.password" autocomplete="off"></el-input>
+          <el-input type="password" v-model="form.password" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="图形码" :label-width="formLabelWidth" prop="code">
           <el-row>
@@ -43,6 +43,22 @@
   </div>
 </template>
 <script>
+var checkEmail = (rule, value, callback) => {
+  var reg = /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/;
+  if (reg.test(value)) {
+    callback();
+  } else {
+    callback(new Error("邮箱不合法"));
+  }
+};
+var checkPhone = (rule, value, callback) => {
+  var reg = /^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/;
+  if (reg.test(value)) {
+    callback();
+  } else {
+    callback(new Error("手机号格式不正确"));
+  }
+};
 export default {
   data() {
     return {
@@ -57,15 +73,21 @@ export default {
       },
       rules: {
         nickname: [
-          { required: true, message: "用户名不能为空", trigger: "blur" }
+          { required: true, message: "用户名不能为空", trigger: "blur" },
+          {
+            min: 5,
+            max: 10,
+            message: "用户名长度为5~10个字符",
+            trigger: "blur"
+          }
         ],
         email: [
           { required: true, message: "邮箱不能为空", trigger: "blur" },
-          { min: 5, max: 20, message: "邮箱长度为大于5个字符", trigger: "blur" }
+          { validator: checkEmail, trigger: "blur" }
         ],
         phone: [
           { required: true, message: "电话不能为空", trigger: "blur" },
-          { min: 11, max: 11, message: "电话长度为11个字符", trigger: "blur" }
+          { validator: checkPhone, trigger: "blur" }
         ],
         password: [
           { required: true, message: "密码不能为空", trigger: "blur" },
