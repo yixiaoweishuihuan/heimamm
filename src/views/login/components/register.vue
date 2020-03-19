@@ -66,7 +66,7 @@
 import { apiGetCode, submit } from "@/api/register";
 
 //导入自定义验证规则
-import {checkPhone,checkEmail} from "@/utils/mycheck.js"
+import { checkPhone, checkEmail } from "@/utils/mycheck.js";
 
 export default {
   data() {
@@ -201,10 +201,7 @@ export default {
       })
         .then(res => {
           if (res.data.code == 200) {
-            this.$message.success({
-              message: res.data.data.captcha,
-              type: "success"
-            });
+            this.$message.success("手机验证码为：" + res.data.data.captcha);
           } else {
             this.$message.error(res.data.message);
           }
