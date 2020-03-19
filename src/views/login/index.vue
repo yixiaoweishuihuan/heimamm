@@ -9,7 +9,7 @@
       </div>
       <!-- form 表单 -->
       <el-form ref="form" :rules="rules" :model="form" label-width="80px">
-        <el-form-item label-width="0">
+        <el-form-item label-width="0" prop="phone">
           <el-input v-model="form.phone" prefix-icon="el-icon-user" placeholder="请输入手机号"></el-input>
         </el-form-item>
         <el-form-item label-width="0" prop="password">
@@ -21,7 +21,7 @@
               <el-input v-model="form.checkCode" prefix-icon="el-icon-key" placeholder="请输入验证码"></el-input>
             </el-col>
             <el-col :span="8">
-              <img class="checkImg" src="../../assets/images/login_captcha.png" alt />
+              <img class="checkImg" :src="imgUrl" alt @click="changeImg" />
             </el-col>
           </el-row>
         </el-form-item>
@@ -50,6 +50,10 @@
 <script>
 //导入注册组件
 import register from "./components/register";
+//导入 自定义规则
+import { checkPhone } from "@/utils/mycheck.js";
+//导入 登录的 apiLogin 方法
+// import { apiLogin } from "@/api/login.js";
 export default {
   //注册
   components: {
@@ -64,6 +68,10 @@ export default {
         isChecked: [] //是否阅读
       },
       rules: {
+        phone: [
+          { required: true, message: "手机号不能为空", trigger: "blur" },
+          { validator: checkPhone, trigger: "blur" }
+        ],
         password: [
           { required: true, message: "密码不能为空", trigger: "blur" },
           { min: 5, max: 10, message: "密码长度为5~10个字符", trigger: "blur" }
@@ -80,14 +88,30 @@ export default {
             trigger: "change"
           }
         ]
-      }
+      },
+      imgUrl: process.env.VUE_APP_URL + "/captcha?type=login&xxx=" + Date.now() //验证码图片地址
     };
   },
   methods: {
+    //点击验证码图片 切换验证码
+    changeImg() {
+      this.imgUrl =
+        process.env.VUE_APP_URL + "/captcha?type=login&xxx=" + Date.now(); //验证码图片地址
+    },
     //登录
     onSubmit() {
       this.$refs.form.validate(valid => {
         if (valid) {
+          //发送请求 登录申请
+          // apiLogin({
+          //   phone:this.form.phone,
+          //   password:this.form.password,
+          //   code:this.form.checkCode
+          // }).then(res=>{
+          //   console.log(res);
+          // }).catch(err=>{
+          //   console.log(err);
+          // })
           this.$message({
             message: "验证成功！",
             type: "success"
