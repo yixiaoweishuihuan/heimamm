@@ -4,7 +4,7 @@ import axios from 'axios'
 
 //创建一个新的 axios 对象 并创建一个基地址
 var instance = axios.create({
-    baseURL:process.env.VUE_APP_URL
+    baseURL:process.env.VUE_APP_URL,
 })
 
 //获取短信验证码的方法 apiGetCode()

@@ -4,15 +4,17 @@ import axios from 'axios';
 
 // 创建一个新的axios对象 并设置基地址
 var instance = axios.create({
-    baseURL:process.env.VUE_APP_URL
+    baseURL: process.env.VUE_APP_URL,
+    // 跨域携带令牌
+    withCredentials: true
 })
 
 //登录的 login 方法
-export function apiLogin(phone,password,code){
+export function apiLogin(phone, password, code) {
     return instance({
-        url:"/login",
-        method:"post",
-        data:{
+        url: "/login",
+        method: "post",
+        data: {
             phone,
             password,
             code

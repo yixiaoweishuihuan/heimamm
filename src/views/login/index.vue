@@ -53,7 +53,7 @@ import register from "./components/register";
 //导入 自定义规则
 import { checkPhone } from "@/utils/mycheck.js";
 //导入 登录的 apiLogin 方法
-// import { apiLogin } from "@/api/login.js";
+import { apiLogin } from "@/api/login.js";
 export default {
   //注册
   components: {
@@ -103,19 +103,19 @@ export default {
       this.$refs.form.validate(valid => {
         if (valid) {
           //发送请求 登录申请
-          // apiLogin({
-          //   phone:this.form.phone,
-          //   password:this.form.password,
-          //   code:this.form.checkCode
-          // }).then(res=>{
-          //   console.log(res);
-          // }).catch(err=>{
-          //   console.log(err);
-          // })
-          this.$message({
-            message: "验证成功！",
-            type: "success"
-          });
+          apiLogin({
+            phone:this.form.phone,
+            password:this.form.password,
+            code:this.form.checkCode
+          }).then(res=>{
+            window.console.log(res);
+          }).catch(err=>{
+            window.console.log(err);
+          })
+          // this.$message({
+          //   message: "验证成功！",
+          //   type: "success"
+          // });
         } else {
           this.$message.error("验证失败！");
           return false;
