@@ -10,7 +10,7 @@ var instance = axios.create({
 })
 
 //登录的 login 方法
-export function apiLogin(phone, password, code) {
+export function apiLogin({phone, password, code}) {
     return instance({
         url: "/login",
         method: "post",

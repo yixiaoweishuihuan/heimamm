@@ -13,7 +13,7 @@
           <el-input v-model="form.phone" prefix-icon="el-icon-user" placeholder="请输入手机号"></el-input>
         </el-form-item>
         <el-form-item label-width="0" prop="password">
-          <el-input v-model="form.password" prefix-icon="el-icon-lock" placeholder="请输入密码"></el-input>
+          <el-input v-model="form.password" type="password" prefix-icon="el-icon-lock" placeholder="请输入密码"></el-input>
         </el-form-item>
         <el-form-item label-width="0" prop="checkCode">
           <el-row class="checkCode">
@@ -54,6 +54,8 @@ import register from "./components/register";
 import { checkPhone } from "@/utils/mycheck.js";
 //导入 登录的 apiLogin 方法
 import { apiLogin } from "@/api/login.js";
+//导入 mytoken 文件
+import { setTaken } from "@/utils/mytoken.js";
 export default {
   //注册
   components: {
@@ -104,18 +106,24 @@ export default {
         if (valid) {
           //发送请求 登录申请
           apiLogin({
-            phone:this.form.phone,
-            password:this.form.password,
-            code:this.form.checkCode
-          }).then(res=>{
-            window.console.log(res);
-          }).catch(err=>{
-            window.console.log(err);
+            phone: this.form.phone,
+            password: this.form.password,
+            code: this.form.checkCode
           })
-          // this.$message({
-          //   message: "验证成功！",
-          //   type: "success"
-          // });
+            .then(res => {
+              if (res.data.code == 200) {
+                this.$message("登录成功");
+                //跳转到主页
+                this.$router.push("/index");
+                //保存token
+                setTaken(res.data.data.token);
+              } else {
+                this.$message.error(res.data.msg);
+              }
+            })
+            .catch(err => {
+              window.console.log(err);
+            });
         } else {
           this.$message.error("验证失败！");
           return false;
