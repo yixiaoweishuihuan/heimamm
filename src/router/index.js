@@ -19,6 +19,24 @@ import enterprise from '../views/index/components/enterprise.vue'
 //导入 subject 组件
 import subject from '../views/index/components/subject.vue'
 
+//导入 NProgress
+import NProgress from 'nprogress'
+import "nprogress/nprogress.css"
+
+//导入 token 操作方法
+import {
+    getToken
+} from '../utils/mytoken'
+//导入 getUserInfo（）
+import {
+    getUserInfo
+} from '../api/index'
+
+// 导入 element 的 message
+import {
+    Message
+} from 'element-ui'
+
 //导入  vue-router
 import VueRouter from 'vue-router'
 //注册路由
@@ -37,14 +55,43 @@ const router = new VueRouter({
         },
         {
             //主页
-            path:'/index',
-            component:index,
-            children:[
-                {path:"chart",component:chart},
-                {path:"user",component:user},
-                {path:"question",component:question},
-                {path:"enterprise",component:enterprise},
-                {path:"subject",component:subject},
+            path: '/index',
+            component: index,
+            children: [{
+                    path: "chart",
+                    component: chart,
+                    meta: {
+                        title: "数据概览"
+                    }
+                },
+                {
+                    path: "user",
+                    component: user,
+                    meta: {
+                        title: "用户列表"
+                    }
+                },
+                {
+                    path: "question",
+                    component: question,
+                    meta: {
+                        title: "题库列表"
+                    }
+                },
+                {
+                    path: "enterprise",
+                    component: enterprise,
+                    meta: {
+                        title: "企业列表"
+                    }
+                },
+                {
+                    path: "subject",
+                    component: subject,
+                    meta: {
+                        title: "学科列表"
+                    }
+                },
             ]
         },
         {
@@ -53,6 +100,52 @@ const router = new VueRouter({
             redirect: '/login'
         }
     ]
+})
+
+//全局前置守卫
+router.beforeEach((to, from, next) => {
+    //得到 title 属性
+    const title = to.meta.title
+    document.title = title;
+    // 开启进度条
+    NProgress.start();
+
+    if (to.path !== "/login") {
+        //判断token是否存在
+        if (!getToken()) {
+            //没有token 未登录
+            Message.error("您还没有登录！");
+            //关闭进度条
+            NProgress.done();
+            //跳转到登录页
+            next("/login");
+        } else {
+            //有token
+            getUserInfo().then(res => {
+                if (res.data.code == 200) {
+                    //token为真
+                    next();
+                } else if (res.data.code == 206) {
+                    //假的token
+                    Message.error("token错误！");
+                    //关闭进度条
+                    NProgress.done();
+                    //跳转到登录页
+                    next("/login");
+                }
+            })
+        }
+
+    } else {
+        //执行后续代码
+        next();
+    }
+})
+
+//   全局后置钩子
+router.afterEach(() => {
+    // 关闭进度条
+    NProgress.done();
 })
 
 //导出 router

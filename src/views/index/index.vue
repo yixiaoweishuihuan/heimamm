@@ -17,7 +17,12 @@
       <el-container>
         <!-- 左边 -->
         <el-aside width="auto">
-          <el-menu default-active="/index/chart" class="el-menu-vertical-demo" :collapse="blo" :router="true">
+          <el-menu
+            default-active="/index/chart"
+            class="el-menu-vertical-demo"
+            :collapse="blo"
+            :router="true"
+          >
             <el-menu-item index="/index/chart">
               <i class="el-icon-pie-chart"></i>
               <span slot="title">数据概览</span>
@@ -64,11 +69,15 @@ export default {
   methods: {
     //获取用户信息
     getUser() {
-      getUserInfo(getToken())
+      getUserInfo()
         .then(res => {
           if (res.data.code == 200) {
             this.info = res.data.data;
             this.avatar = process.env.VUE_APP_URL + "/" + res.data.data.avatar;
+    //       } else if (res.data.code == 206) {
+    //         this.$message.error("token错误！");
+    //         //跳转到登录页面
+    //         this.$router.push("/login");
           }
         })
         .catch(err => {
@@ -104,6 +113,13 @@ export default {
     }
   },
   created() {
+    //判断 token 是否为空
+    // if (!getToken()) {
+    //   this.$message.error("对不起，您还未登录!");
+    //   //跳转到登录页面
+    //   this.$router.push("/login");
+    //   return;
+    // }
     //页面一加载 调用 getUser方法 获取用户详细信息
     this.getUser();
   }

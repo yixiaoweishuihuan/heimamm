@@ -13,7 +13,12 @@
           <el-input v-model="form.phone" prefix-icon="el-icon-user" placeholder="请输入手机号"></el-input>
         </el-form-item>
         <el-form-item label-width="0" prop="password">
-          <el-input v-model="form.password" type="password" prefix-icon="el-icon-lock" placeholder="请输入密码"></el-input>
+          <el-input
+            v-model="form.password"
+            type="password"
+            prefix-icon="el-icon-lock"
+            placeholder="请输入密码"
+          ></el-input>
         </el-form-item>
         <el-form-item label-width="0" prop="checkCode">
           <el-row class="checkCode">
@@ -27,7 +32,7 @@
         </el-form-item>
         <el-form-item label-width="0" prop="isChecked">
           <el-checkbox-group v-model="form.isChecked" class="isChecked">
-            <el-checkbox name="type">
+            <el-checkbox label="A">
               我已阅读并同意
               <el-link type="primary">用户协议</el-link>和
               <el-link type="primary">隐私条款</el-link>
@@ -64,10 +69,10 @@ export default {
   data() {
     return {
       form: {
-        phone: "", //手机号码
-        password: "", //密码
+        phone: 18511111111, //手机号码
+        password: '12345678', //密码
         checkCode: "", //验证码
-        isChecked: [] //是否阅读
+        isChecked: ["A"] //是否阅读
       },
       rules: {
         phone: [
@@ -112,13 +117,13 @@ export default {
           })
             .then(res => {
               if (res.data.code == 200) {
-                this.$message("登录成功");
+                this.$message.success("登录成功");
                 //跳转到主页
                 this.$router.push("/index");
                 //保存token
                 setTaken(res.data.data.token);
               } else {
-                this.$message.error(res.data.msg);
+                this.$message.error(res.data.message);
               }
             })
             .catch(err => {
