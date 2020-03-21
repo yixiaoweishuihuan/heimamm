@@ -57,7 +57,7 @@
 //导入 getUserInfo 和 exitLogin 方法
 import { getUserInfo, exitLogin } from "@/api/index.js";
 //导入 getToken 和 removeToken 方法
-import { getToken, removeToken } from "@/utils/mytoken.js";
+import { removeToken } from "@/utils/mytoken.js";
 export default {
   data() {
     return {
@@ -74,10 +74,10 @@ export default {
           if (res.data.code == 200) {
             this.info = res.data.data;
             this.avatar = process.env.VUE_APP_URL + "/" + res.data.data.avatar;
-    //       } else if (res.data.code == 206) {
-    //         this.$message.error("token错误！");
-    //         //跳转到登录页面
-    //         this.$router.push("/login");
+            //       } else if (res.data.code == 206) {
+            //         this.$message.error("token错误！");
+            //         //跳转到登录页面
+            //         this.$router.push("/login");
           }
         })
         .catch(err => {
@@ -94,7 +94,7 @@ export default {
       })
         .then(() => {
           //发送请求 退出该账户
-          exitLogin(getToken())
+          exitLogin()
             .then(res => {
               if (res.data.code == 200) {
                 //清除 token

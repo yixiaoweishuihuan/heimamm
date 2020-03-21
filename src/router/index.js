@@ -105,8 +105,10 @@ const router = new VueRouter({
 //全局前置守卫
 router.beforeEach((to, from, next) => {
     //得到 title 属性
-    const title = to.meta.title
-    document.title = title;
+    const title = to.meta.title;
+    if(title){
+        document.title = title;
+    }
     // 开启进度条
     NProgress.start();
 

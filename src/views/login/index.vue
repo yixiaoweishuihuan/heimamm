@@ -118,10 +118,10 @@ export default {
             .then(res => {
               if (res.data.code == 200) {
                 this.$message.success("登录成功");
-                //跳转到主页
-                this.$router.push("/index");
                 //保存token
                 setTaken(res.data.data.token);
+                //跳转到主页
+                this.$router.push("/index");
               } else {
                 this.$message.error(res.data.message);
               }
