@@ -17,8 +17,12 @@ Vue.config.productionTip = false
 //导入 router
 import router from './router/index'
 
+// 导入 store
+import store from './store/index'
+
 //创建一个vue实例
 new Vue({
+  store,
   router,
   render: h => h(App), //将App组件渲染到vue实例中
 }).$mount('#app')

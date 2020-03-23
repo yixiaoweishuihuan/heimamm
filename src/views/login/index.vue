@@ -121,8 +121,10 @@ export default {
                 //保存token
                 setTaken(res.data.data.token);
                 //跳转到主页
-                this.$router.push("/index");
+                this.$router.push("/index/chart");
               } else {
+                //切换验证码
+                this.changeImg();
                 this.$message.error(res.data.message);
               }
             })

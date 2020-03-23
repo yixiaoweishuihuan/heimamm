@@ -19,23 +19,17 @@ import enterprise from '../views/index/components/enterprise.vue'
 //导入 subject 组件
 import subject from '../views/index/components/subject.vue'
 
-//导入 NProgress
+//导入 NProgress 进度条
 import NProgress from 'nprogress'
 import "nprogress/nprogress.css"
 
 //导入 token 操作方法
-import {
-    getToken
-} from '../utils/mytoken'
+import { getToken } from '../utils/mytoken'
 //导入 getUserInfo（）
-import {
-    getUserInfo
-} from '../api/index'
+import { getUserInfo } from '../api/index'
 
 // 导入 element 的 message
-import {
-    Message
-} from 'element-ui'
+import { Message } from 'element-ui'
 
 //导入  vue-router
 import VueRouter from 'vue-router'
@@ -102,6 +96,9 @@ const router = new VueRouter({
     ]
 })
 
+//导入 store
+import store from '../store/index'
+
 //全局前置守卫
 router.beforeEach((to, from, next) => {
     //得到 title 属性
@@ -126,6 +123,8 @@ router.beforeEach((to, from, next) => {
             getUserInfo().then(res => {
                 if (res.data.code == 200) {
                     //token为真
+                    //调用 getInfo 方法 为用户信息赋值
+                    store.commit("setUserInfo",res.data.data);
                     next();
                 } else if (res.data.code == 206) {
                     //假的token

@@ -9,8 +9,8 @@
           <span class="heimamm">黑马面面</span>
         </div>
         <div class="right">
-          <img :src="avatar" alt />
-          <span class="hello">{{info.username}}，你好</span>
+          <img :src="$store.state.userIcon" alt />
+          <span class="hello">{{$store.state.userName}}，你好</span>
           <el-button type="primary" size="mini" @click="exitUser">退出</el-button>
         </div>
       </el-header>
@@ -55,7 +55,7 @@
 </template>
 <script>
 //导入 getUserInfo 和 exitLogin 方法
-import { getUserInfo, exitLogin } from "@/api/index.js";
+import { exitLogin } from "@/api/index.js";
 //导入 getToken 和 removeToken 方法
 import { removeToken } from "@/utils/mytoken.js";
 export default {
@@ -67,24 +67,6 @@ export default {
     };
   },
   methods: {
-    //获取用户信息
-    getUser() {
-      getUserInfo()
-        .then(res => {
-          if (res.data.code == 200) {
-            this.info = res.data.data;
-            this.avatar = process.env.VUE_APP_URL + "/" + res.data.data.avatar;
-            //       } else if (res.data.code == 206) {
-            //         this.$message.error("token错误！");
-            //         //跳转到登录页面
-            //         this.$router.push("/login");
-          }
-        })
-        .catch(err => {
-          window.console.log(err);
-        });
-    },
-
     //退出
     exitUser() {
       this.$confirm("请确认是否退出该账户！", "提示", {
@@ -111,17 +93,6 @@ export default {
         })
         .catch(() => {});
     }
-  },
-  created() {
-    //判断 token 是否为空
-    // if (!getToken()) {
-    //   this.$message.error("对不起，您还未登录!");
-    //   //跳转到登录页面
-    //   this.$router.push("/login");
-    //   return;
-    // }
-    //页面一加载 调用 getUser方法 获取用户详细信息
-    this.getUser();
   }
 };
 </script>
