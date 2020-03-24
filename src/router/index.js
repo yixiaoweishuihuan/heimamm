@@ -9,15 +9,15 @@ import register from '../views/login/components/register.vue'
 import index from '../views/index/index.vue'
 
 //导入 chart 组件
-import chart from '../views/index/components/chart.vue'
+import chart from '../views/chart/chart.vue'
 //导入 user 组件
-import user from '../views/index/components/user.vue'
+import user from '../views/user/user.vue'
 //导入 question 组件
-import question from '../views/index/components/question.vue'
+import question from '../views/question/question.vue'
 //导入 enterprise 组件
-import enterprise from '../views/index/components/enterprise.vue'
+import enterprise from '../views/enterprise/enterprise.vue'
 //导入 subject 组件
-import subject from '../views/index/components/subject.vue'
+import subject from '../views/subject/subject.vue'
 
 //导入 NProgress 进度条
 import NProgress from 'nprogress'
