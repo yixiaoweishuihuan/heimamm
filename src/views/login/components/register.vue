@@ -244,6 +244,12 @@ export default {
     font-size: 18px;
     color: rgba(254, 254, 254, 1);
   }
+  .el-dialog__close{
+    color:#fff;
+  }
+  .el-dialog__close:hover{
+    color:#000
+  }
 }
 .el-dialog__body {
   padding-left: 0;

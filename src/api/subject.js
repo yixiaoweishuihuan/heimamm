@@ -51,3 +51,32 @@ export function changeStatus(id){
         }
     })
 }
+
+//添加学科
+export function addSubject({rid,name,short_name,intro,remark}){
+    return instance({
+        url:"/subject/add",
+        method:"post",
+        data:{
+            rid,name,short_name,intro,remark
+        }
+    })
+}
+
+//修改学科
+export function editSubject({id,rid,name,short_name,intro,remark}){
+    return instance({
+        url:"/subject/edit",
+        method:"post",
+        data:{id,rid,name,short_name,intro,remark}
+    })
+}
+
+//删除学科
+export function delateSubject(id){
+    return instance({
+        url:"/subject/remove",
+        method:"post",
+        data:{id:id}
+    })
+}

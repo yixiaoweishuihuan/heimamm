@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-dialog title="新增学科" :visible.sync="dialogFormVisible">
+    <el-dialog title="编辑学科" :visible.sync="dialogFormVisible">
       <el-form :model="form" :rules="rules" ref="form">
         <el-form-item label="学科编号" prop="rid" :label-width="formLabelWidth">
           <el-input v-model="form.rid" autocomplete="off"></el-input>
@@ -26,12 +26,13 @@
   </div>
 </template>
 <script>
-//导入 新增学科的方法
-import { addSubject } from "@/api/subject.js";
+//导入 编辑学科的方法
+import { editSubject } from "@/api/subject";
 export default {
   data() {
     return {
       form: {
+        id: "",
         rid: "", //学科编号
         name: "", //学科名称
         short_name: "", //学科简称
@@ -47,18 +48,20 @@ export default {
     };
   },
   methods: {
-    //点击确定按钮提交新增的学科
+    //点击确定按钮提交修改后的的学科
     onSubmit() {
       this.$refs.form.validate(valid => {
         if (valid) {
-          addSubject(this.form)
+          editSubject(this.form)
             .then(res => {
               if (res.data.code == 200) {
-                this.$message.success("新增成功！");
-                //隐藏面板 清空表单
-                this.cancel();
+                //隐藏面板
+                this.dialogFormVisible = false;
+                this.$message.success("修改成功！");
                 //重新渲染学科列表
                 this.$parent.getSubjectList();
+              } else if (res.data.code == 0) {
+                this.$message.error("学科编号不能重复");
               } else {
                 this.$message.error(res.data.message);
               }
@@ -75,11 +78,6 @@ export default {
     cancel() {
       //隐藏面板
       this.dialogFormVisible = false;
-      //清空表单
-      this.$refs.form.resetFields();
-      this.form.short_name = "";
-      this.form.intro = "";
-      this.form.remark = "";
     }
   }
 };
