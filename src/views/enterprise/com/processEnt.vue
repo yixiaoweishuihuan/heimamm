@@ -1,0 +1,62 @@
+<template>
+  <div>
+    <el-dialog :title="isEdit?'修改企业':'新增企业'" :visible.sync="dialogFormVisible">
+      <el-form :model="form" :rules="rules" ref="form">
+        <el-form-item label="企业编号" prop="eid" :label-width="formLabelWidth">
+          <el-input v-model="form.eid" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="企业名称" prop="name" :label-width="formLabelWidth">
+          <el-input v-model="form.name" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="企业简称" prop="short_name" :label-width="formLabelWidth">
+          <el-input v-model="form.short_name" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="企业简介" prop="intro" :label-width="formLabelWidth">
+          <el-input v-model="form.intro" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="企业备注" :label-width="formLabelWidth">
+          <el-input v-model="form.remark" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="cancel">取 消</el-button>
+        <el-button type="primary" @click="onSubmit">确 定</el-button>
+      </div>
+    </el-dialog>
+  </div>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      isEdit: true, //是否是修改页面
+      dialogFormVisible: false, //是否显示面板
+      formLabelWidth: "122px",
+      form: {
+        id: "",
+        eid: "", //企业编号
+        name: "", //企业名称
+        short_name: "", //企业简称
+        intro: "", //企业简介
+        remark: "" //企业备注
+      },
+      rules: {
+        eid: [{ required: true, message: "请输入企业编号", trigger: "blur" }],
+        name: [{ required: true, message: "请输入企业名称", trigger: "blur" }],
+        short_name: [
+          { required: true, message: "请输入企业简称", trigger: "blur" }
+        ],
+        intro: [{ required: true, message: "请输入企业简介", trigger: "blur" }]
+      }
+    };
+  },
+  methods: {
+      //确认按钮
+      onSubmit(){},
+      //取消按钮
+      cancel(){},
+  },
+};
+</script>
+<style>
+</style>

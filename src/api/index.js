@@ -2,9 +2,7 @@
 //导入 axios
 import axios from 'axios'
 //导入 getToken 方法
-import {
-    getToken
-} from '@/utils/mytoken.js'
+import { getToken } from '@/utils/mytoken.js'
 
 //创建一个新的 axios 实例对象
 const instance = axios.create({

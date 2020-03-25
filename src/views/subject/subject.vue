@@ -38,8 +38,11 @@
         <el-table-column type="index" label="序号" width="80"></el-table-column>
         <el-table-column prop="rid" label="学科编号" width="180"></el-table-column>
         <el-table-column prop="name" label="学科名称" width="180"></el-table-column>
+        <el-table-column prop="intro" label="简称" width="180"></el-table-column>
         <el-table-column prop="username" label="创建者" width="180"></el-table-column>
-        <el-table-column prop="create_time" label="创建日期" width="180"></el-table-column>
+        <el-table-column label="创建日期" width="180">
+          <template slot-scope="scope">{{scope.row.create_time | myTime}}</template>
+        </el-table-column>
         <el-table-column label="状态">
           <template slot-scope="scope">{{scope.row.status?"启用":"禁用"}}</template>
         </el-table-column>
@@ -71,7 +74,7 @@
 </template>
 <script>
 //导入 操作学科列表的数据的 api
-import { getSubject, changeStatus,delateSubject } from "@/api/subject.js";
+import { getSubject, changeStatus, delateSubject } from "@/api/subject.js";
 //导入 addDialog 框
 import addDialog from "./com/addDialog";
 //导入 editDialog 框
@@ -123,12 +126,12 @@ export default {
         .then(res => {
           if (res.data.code == 200) {
             //重新获取学科列表
-            this.getSubjectList();
             if (row.status === 0) {
               this.$message.success("启用成功！");
             } else {
               this.$message.success("禁用成功！");
             }
+            this.getSubjectList();
           } else {
             this.$message.error(res.data.message);
           }
@@ -167,7 +170,10 @@ export default {
     editSubject(row) {
       //显示 编辑框
       this.$refs.editDialog.dialogFormVisible = true;
-      this.$refs.editDialog.form = JSON.parse(JSON.stringify(row));
+      //编辑状态保存
+      if (this.$refs.editDialog.form.id !== row.id) {
+        this.$refs.editDialog.form = JSON.parse(JSON.stringify(row));
+      }
     },
     //删除按钮
     delate(row) {
@@ -175,19 +181,28 @@ export default {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
-      }).then(() => {
-          delateSubject(row.id).then(res=>{
-            if(res.data.code==200){
-              this.$message.success("删除成功！");
-              //刷新 学科列表
-              this.getSubjectList();
-            }else{
-              this.$message.error(res.data.message);
-            }
-          }).catch(err=>{
-            window.console.log(err);
-          })
-        }).catch(() => {
+      })
+        .then(() => {
+          delateSubject(row.id)
+            .then(res => {
+              if (res.data.code == 200) {
+                //判断当前页是否是最后一条数据
+                if (this.subjectList.length === 1) {
+                  //当前页码减一
+                  this.obj.page -= 1;
+                }
+                this.$message.success("删除成功！");
+                //刷新 学科列表
+                this.getSubjectList();
+              } else {
+                this.$message.error(res.data.message);
+              }
+            })
+            .catch(err => {
+              window.console.log(err);
+            });
+        })
+        .catch(() => {
           this.$message.info("已取消删除");
         });
     }

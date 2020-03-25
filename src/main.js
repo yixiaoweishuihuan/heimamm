@@ -20,6 +20,9 @@ import router from './router/index'
 // 导入 store
 import store from './store/index'
 
+//导入过滤器
+import './filters/timeFilter.js'
+
 //创建一个vue实例
 new Vue({
   store,
