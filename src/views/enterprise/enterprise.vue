@@ -140,6 +140,8 @@ export default {
       //   this.$refs.entAdd.dialogFormVisible = true;
       this.$refs.processEnt.dialogFormVisible = true;
       this.$refs.processEnt.isEdit = false;
+      //清空新增表单
+      this.$refs.processEnt.$refs.form.resetFields();
     },
     //编辑
     editEnterprise(row) {

@@ -14,7 +14,7 @@
         <el-form-item label="企业简介" prop="intro" :label-width="formLabelWidth">
           <el-input v-model="form.intro" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="企业备注" :label-width="formLabelWidth">
+        <el-form-item label="企业备注" prop="remark" :label-width="formLabelWidth">
           <el-input v-model="form.remark" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
@@ -26,6 +26,8 @@
   </div>
 </template>
 <script>
+//导入 操作企业的api
+import { apiEnterEdit,apiEnterAdd } from "@/api/enterprise.js";
 export default {
   data() {
     return {
@@ -46,16 +48,71 @@ export default {
         short_name: [
           { required: true, message: "请输入企业简称", trigger: "blur" }
         ],
-        intro: [{ required: true, message: "请输入企业简介", trigger: "blur" }]
+        intro: [{ required: true, message: "请输入企业简介", trigger: "blur" }],
+        remark: []
       }
     };
   },
   methods: {
-      //确认按钮
-      onSubmit(){},
-      //取消按钮
-      cancel(){},
-  },
+    //确认按钮
+    onSubmit() {
+      if (this.isEdit) {
+        this.$refs.form.validate(valid => {
+          if (valid) {
+            apiEnterEdit(this.form)
+              .then(res => {
+                if (res.data.code == 200) {
+                  //隐藏面板
+                  this.dialogFormVisible = false;
+                  //刷新企业列表
+                  this.$parent.getEnterprise();
+                  this.$message.success("修改成功！");
+                } else {
+                  this.$message.error(res.data.message);
+                }
+              })
+              .catch(err => {
+                window.console.log(err);
+              });
+          } else {
+            this.$message.error("验证失败！");
+            return false;
+          }
+        });
+      } else {
+        this.$refs.form.validate(valid => {
+          if (valid) {
+            apiEnterAdd(this.form)
+              .then(res => {
+                if (res.data.code == 200) {
+                  //重新渲染企业列表
+                  this.$parent.getEnterprise();
+                  this.$message.success("新增成功！");
+                  //隐藏面板 清空表单
+                  this.cancel();
+                } else {
+                  this.$message.error(res.data.message);
+                }
+              })
+              .catch(err => {
+                window.console.log(err);
+              });
+          } else {
+            this.$message.error("验证失败！");
+          }
+        });
+      }
+    },
+    //取消按钮
+    cancel() {
+      if (!this.isEdit) {
+        //清空表单
+        this.$refs.form.resetFields();
+      }
+      //隐藏面板
+      this.dialogFormVisible = false;
+    }
+  }
 };
 </script>
 <style>

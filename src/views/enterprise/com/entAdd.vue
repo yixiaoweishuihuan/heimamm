@@ -14,7 +14,7 @@
         <el-form-item label="企业简介" prop="intro" :label-width="formLabelWidth">
           <el-input v-model="form.intro" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="企业备注" :label-width="formLabelWidth">
+        <el-form-item label="企业备注" prop="remark" :label-width="formLabelWidth">
           <el-input v-model="form.remark" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
@@ -44,7 +44,8 @@ export default {
         short_name: [
           { required: true, message: "请输入企业简称", trigger: "blur" }
         ],
-        intro: [{ required: true, message: "请输入企业简介", trigger: "blur" }]
+        intro: [{ required: true, message: "请输入企业简介", trigger: "blur" }],
+        remark: [{}],
       },
       formLabelWidth: "122px",
       dialogFormVisible: false
@@ -81,7 +82,7 @@ export default {
       this.dialogFormVisible = false;
       //清空表单
       this.$refs.form.resetFields();
-      this.form.remark = "";
+      // this.form.remark = "";
     }
   }
 };
