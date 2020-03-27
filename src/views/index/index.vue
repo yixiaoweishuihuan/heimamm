@@ -17,32 +17,17 @@
       <el-container>
         <!-- 左边 -->
         <el-aside width="auto">
-          <el-menu
-            default-active="/index/chart"
-            class="el-menu-vertical-demo"
-            :collapse="blo"
-            :router="true"
-          >
-            <el-menu-item index="/index/chart">
-              <i class="el-icon-pie-chart"></i>
-              <span slot="title">数据概览</span>
-            </el-menu-item>
-            <el-menu-item index="/index/user">
-              <i class="el-icon-user"></i>
-              <span slot="title">用户列表</span>
-            </el-menu-item>
-            <el-menu-item index="/index/question">
-              <i class="el-icon-edit-outline"></i>
-              <span slot="title">题库列表</span>
-            </el-menu-item>
-            <el-menu-item index="/index/enterprise">
-              <i class="el-icon-office-building"></i>
-              <span slot="title">企业列表</span>
-            </el-menu-item>
-            <el-menu-item index="/index/subject">
-              <i class="el-icon-notebook-2"></i>
-              <span slot="title">学科列表</span>
-            </el-menu-item>
+          <el-menu default-active="/index" :collapse="blo" :router="true">
+            <template v-for="(item, index) in children">
+              <el-menu-item
+                :key="index"
+                v-if="item.meta.roles.includes($store.state.roles)"
+                :index="item.meta.fullPath"
+              >
+                <i :class="item.meta.icon"></i>
+                <span slot="title">{{item.meta.title}}</span>
+              </el-menu-item>
+            </template>
           </el-menu>
         </el-aside>
         <!-- 右边 -->
@@ -54,6 +39,8 @@
   </div>
 </template>
 <script>
+//导入 子路由
+import childrenRouter from "@/router/childrenRouter.js";
 //导入 getUserInfo 和 exitLogin 方法
 import { exitLogin } from "@/api/index.js";
 //导入 getToken 和 removeToken 方法
@@ -63,7 +50,8 @@ export default {
     return {
       blo: false, //是否显示左侧导航栏的文字
       info: "", //用户详细信息
-      avatar: "" //用户头像
+      avatar: "", //用户头像
+      children: childrenRouter //列表数据源
     };
   },
   methods: {

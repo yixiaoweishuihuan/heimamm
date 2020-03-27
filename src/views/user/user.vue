@@ -47,7 +47,7 @@
           <template slot-scope="scope">
             <el-link type="primary" @click="editUser(scope.row)">编辑</el-link>&nbsp;
             <el-link type="primary" @click="disable(scope.row)">{{scope.row.status?"禁用":"启用"}}</el-link>&nbsp;
-            <el-link type="primary" @click="delate(scope.row)">删除</el-link>
+            <el-link type="primary" @click="delate(scope.row)" v-if="['管理员','超级管理员'].includes($store.state.roles)">删除</el-link>
           </template>
         </el-table-column>
       </el-table>
@@ -132,9 +132,11 @@ export default {
       this.$refs.processUser.dialogFormVisible = true;
       this.$refs.processUser.isEdit = true;
       //显示用户信息
-      if (row.id != this.$refs.processUser.form.id) {
-        this.$refs.processUser.form = JSON.parse(JSON.stringify(row));
-      }
+      this.$refs.processUser.$nextTick(() => {
+        // if (row.id != this.$refs.processUser.form.id) {
+          this.$refs.processUser.form = JSON.parse(JSON.stringify(row));
+        // }
+      });
     },
     //禁用/启用
     disable(row) {

@@ -8,6 +8,7 @@ const store = new Vuex.Store({
     state: {
         userName: "", //用户详细信息
         userIcon: "", //用户头像
+        roles:"",//用户角色
     },
     //修改state
     mutations: {
@@ -15,6 +16,9 @@ const store = new Vuex.Store({
         setUserInfo(state, useInfo) {
             state.userName = useInfo.username;
             state.userIcon = process.env.VUE_APP_URL + "/" + useInfo.avatar;
+        },
+        setRoles(state, roles){
+            state.roles = roles;
         }
     },
 })

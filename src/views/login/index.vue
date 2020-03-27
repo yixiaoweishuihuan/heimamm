@@ -121,7 +121,7 @@ export default {
                 //保存token
                 setTaken(res.data.data.token);
                 //跳转到主页
-                this.$router.push("/index/chart");
+                this.$router.push("/index");
               } else {
                 //切换验证码
                 this.changeImg();

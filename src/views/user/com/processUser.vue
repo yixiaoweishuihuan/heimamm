@@ -72,7 +72,7 @@ export default {
           { required: true, message: "请输入电话", trigger: "blur" },
           { validator: checkPhone, trigger: "blur" }
         ],
-        role_id: [{ required: true, message: "请选择角色", trigger: "blur" }],
+        role_id: [{ required: true, message: "请选择角色", trigger: "change" }],
         status: [],
         remark: []
       }
@@ -137,7 +137,7 @@ export default {
       //隐藏面板
       this.dialogFormVisible = false;
     }
-  }
+  },
 };
 </script>
 <style>
