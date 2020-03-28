@@ -1,176 +1,303 @@
 <template>
-  <div>
-    <!-- 顶部 -->
+  <div class="ques">
+    <!-- 头部 -->
     <el-card>
-      <el-form :inline="true" :model="obj" class="demo-form-inline" label-width="103px" >
+      <el-form :inline="true" :model="obj" class="demo-form-inline">
         <el-form-item label="学科">
-          <el-select v-model="obj.role_id" class="long">
-            <el-option label="请选择学科" value></el-option>
-            <el-option label="管理员" :value="2">管理员</el-option>
-            <el-option label="老师" :value="3">老师</el-option>
-            <el-option label="学生" :value="4">学生</el-option>
-          </el-select>
+          <!-- <el-select class="formItems" v-model="obj.subject" placeholder="请选择学科">
+            <template v-for="(item, index) in subjectList">
+              <el-option :key="index" :label="item.name" :value="item.id"></el-option>
+            </template>
+          </el-select>-->
+          <!-- subject选择框 -->
+          <subjuct v-model="obj.subject"></subjuct>
         </el-form-item>
         <el-form-item label="阶段">
-          <el-select v-model="obj.role_id" class="long">
-            <el-option label="请选择阶段" value></el-option>
-            <el-option label="管理员" :value="2">管理员</el-option>
-            <el-option label="老师" :value="3">老师</el-option>
-            <el-option label="学生" :value="4">学生</el-option>
+          <el-select class="formItems" v-model="obj.step">
+            <el-option label="初级" :value="1"></el-option>
+            <el-option label="中级" :value="2"></el-option>
+            <el-option label="高级" :value="3"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="企业">
-          <el-select v-model="obj.role_id" class="long">
-            <el-option label="请选择企业" value></el-option>
-            <el-option label="管理员" :value="2">管理员</el-option>
-            <el-option label="老师" :value="3">老师</el-option>
-            <el-option label="学生" :value="4">学生</el-option>
+          <el-select class="formItems" v-model="obj.enterprise" placeholder="请选择企业">
+            <template v-for="(item, index) in enterpriseList">
+              <el-option :key="index" :label="item.name" :value="item.id"></el-option>
+            </template>
           </el-select>
         </el-form-item>
         <el-form-item label="题型">
-          <el-select v-model="obj.role_id" class="long">
-            <el-option label="请选择题型" value></el-option>
-            <el-option label="管理员" :value="2">管理员</el-option>
-            <el-option label="老师" :value="3">老师</el-option>
-            <el-option label="学生" :value="4">学生</el-option>
+          <el-select class="formItems" v-model="obj.type" placeholder="请选择题型">
+            <el-option label="单选" :value="1"></el-option>
+            <el-option label="多选" :value="2"></el-option>
+            <el-option label="简答" :value="3"></el-option>
           </el-select>
         </el-form-item>
-        <br/>
+        <br />
         <el-form-item label="难度">
-          <el-select v-model="obj.role_id" class="long">
-            <el-option label="请选择难度" value></el-option>
-            <el-option label="管理员" :value="2">管理员</el-option>
-            <el-option label="老师" :value="3">老师</el-option>
-            <el-option label="学生" :value="4">学生</el-option>
+          <el-select class="formItems" v-model="obj.difficulty" placeholder="请选择难度">
+            <el-option label="简单" :value="1"></el-option>
+            <el-option label="一般" :value="2"></el-option>
+            <el-option label="困难" :value="3"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="作者">
-          <el-input v-model="obj.email" class="long"></el-input>
+          <el-input class="formItems" v-model="obj.username"></el-input>
         </el-form-item>
         <el-form-item label="状态">
-          <el-select v-model="obj.role_id" class="long">
-            <el-option label="请选择状态" value></el-option>
-            <el-option label="管理员" :value="2">管理员</el-option>
-            <el-option label="老师" :value="3">老师</el-option>
-            <el-option label="学生" :value="4">学生</el-option>
+          <el-select class="formItems" v-model="obj.status" placeholder="请选择状态">
+            <el-option label="禁用" :value="0"></el-option>
+            <el-option label="启用" :value="1"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="日期">
-          <el-date-picker v-model="obj.date" type="date" placeholder="选择日期"></el-date-picker>
+          <el-date-picker
+            class="formItems"
+            v-model="obj.create_date"
+            type="datetime"
+            placeholder="选择日期时间"
+          ></el-date-picker>
         </el-form-item>
-        <br/>
+        <br />
         <el-form-item label="标题">
-          <el-input v-model="obj.email" class="long"></el-input>
+          <el-input class="myTitle" v-model="obj.title"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="searchUser">筛选</el-button>
+          <el-button type="primary" @click="search">搜索</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button @click="clearSearch">清除</el-button>
+          <el-button @click="clear">清除</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="addUser">
-            <i class="el-icon-plus"></i>&nbsp;新增用户
+          <el-button type="primary" @click="addQues">
+            <i class="el-icon-plus"></i>&nbsp;新增试题
           </el-button>
         </el-form-item>
       </el-form>
     </el-card>
-    <!-- 表格 -->
-    <el-card class="table-content">
-      <el-table :data="userList" style="width: 100%" :border="true">
-        <el-table-column type="index" label="序号" width="80"></el-table-column>
-        <el-table-column prop="username" label="用户名" width="180"></el-table-column>
-        <el-table-column prop="phone" label="电话" width="180"></el-table-column>
-        <el-table-column prop="email" label="邮箱" width="180"></el-table-column>
-        <el-table-column prop="role" label="角色" width="180"></el-table-column>
-        <el-table-column prop="remark" label="备注" width="180"></el-table-column>
-        <el-table-column label="状态">
-          <template slot-scope="scope">{{scope.row.status?"启用":"禁用"}}</template>
-        </el-table-column>
-        <el-table-column prop="operation" label="操作" width="180">
+    <!-- 表格部分 -->
+    <el-card class="tableItem">
+      <!-- 表格数据 -->
+      <el-table :data="quesList" border style="width: 100%">
+        <el-table-column type="index" label="序号"></el-table-column>
+        <el-table-column prop="answer_analyze" label="题目" width="280">
           <template slot-scope="scope">
-            <el-link type="primary" @click="editUser(scope.row)">编辑</el-link>&nbsp;
-            <el-link type="primary" @click="disable(scope.row)">{{scope.row.status?"禁用":"启用"}}</el-link>&nbsp;
-            <el-link
-              type="primary"
-              @click="delate(scope.row)"
-              v-if="['管理员','超级管理员'].includes($store.state.roles)"
-            >删除</el-link>
+            <span v-html="scope.row.answer_analyze"></span>
+          </template>
+        </el-table-column>
+        <el-table-column label="学科.阶段" width="140">
+          <template slot-scope="scope">
+            {{scope.row.subject_name}}.
+            <span v-if="scope.row.step==1">初级</span>
+            <span v-if="scope.row.step==2">中级</span>
+            <span v-if="scope.row.step==3">高级</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="题型">
+          <template slot-scope="scope">
+            <span v-if="scope.row.type==1">单选</span>
+            <span v-if="scope.row.type==2">多选</span>
+            <span v-if="scope.row.type==3">简答</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="enterprise_name" label="企业" width="140"></el-table-column>
+        <el-table-column prop="username" label="创建者" width="140"></el-table-column>
+        <el-table-column label="状态">
+          <template slot-scope="scope">
+            <span v-if="scope.row.status==0">禁用</span>
+            <span v-if="scope.row.status==1">启用</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="reads" label="访问量"></el-table-column>
+        <el-table-column label="操作" width="140">
+          <template slot-scope="scope">
+            <el-link type="primary" @click="edit(scope.row)">编辑</el-link>&nbsp;
+            <el-link type="primary" @click="status(scope.row)">{{scope.row.status==0?"启用":"禁用"}}</el-link>&nbsp;
+            <el-link type="primary" @click="delate(scope.row)">删除</el-link>
           </template>
         </el-table-column>
       </el-table>
-      <!-- 分页 -->
+      <!-- 分页插件 -->
       <el-pagination
-        background
         @size-change="sizeChange"
         @current-change="currentChange"
         :current-page="obj.page"
-        :page-sizes="pageSizeArr"
+        :page-sizes="pageSizes"
         :page-size="obj.limit"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="counts"
+        :total="total"
       ></el-pagination>
     </el-card>
   </div>
 </template>
 <script>
+//导入 subjuct 的选择框
+import subjuct from "@/components/subjectSelect.vue";
+//导入 获取企业列表的方法
+import { apiEnterList } from "@/api/enterprise.js";
+//导入 操作题目的api方法
+import { apiGetQuseList, apiSetStatus, apiDelQues } from "@/api/question.js";
 export default {
+  components: {
+    subjuct
+  },
   data() {
     return {
-      //筛选使用数据
+      //头部绑定的数据
       obj: {
-        date: "", //日期
+        title: "",
+        subject: "",
+        enterprise: "",
+        type: "",
+        step: "",
         username: "",
-        email: "",
-        role_id: "", //角色
+        status: "",
+        difficulty: "",
+        create_date: "",
         page: 1, //当前页
         limit: 4 //当前页容量
       },
-      //表格数据
-      userList: [],
-      //页容量分组
-      pageSizeArr: [2, 4, 8],
-      //数据总条数
-      counts: 0
+      quesList: [], //表格数据
+      pageSizes: [2, 4, 8], //页容量
+      total: 0, //数据总数
+      subjectList: [], //学科列表
+      enterpriseList: [] //企业列表
     };
   },
   methods: {
-    //获取用户列表
-    getUserList() {},
-    //筛选用户
-    searchUser() {
-      this.getUserList();
+    changeSubject(value) {
+      this.obj.subject = value;
     },
-    //清除筛选
-    clearSearch() {
+    //搜索事件
+    search() {
+      //获取满足条件的题目列表
+      this.question();
+    },
+    //清除搜索表单
+    clear() {
+      this.obj.subject = "";
+      this.obj.step = "";
+      this.obj.enterprise = "";
+      this.obj.type = "";
+      this.obj.difficulty = "";
       this.obj.username = "";
-      this.obj.email = "";
-      this.obj.role_id = "";
+      this.obj.status = "";
+      this.obj.create_date = "";
+      this.obj.title = "";
     },
-    //新增用户
-    addUser() {},
-    //禁用/启用
-    disable() {},
-    //删除用户
-    delate() {},
-    //改变页容量
+    //新增试题
+    addQues() {},
+    //编辑按钮
+    edit() {},
+    //禁用/启用按钮
+    status(row) {
+      apiSetStatus(row.id)
+        .then(res => {
+          if (res.data.code == 200) {
+            this.question();
+            if (row.status == 1) {
+              this.$message.success("禁用成功！");
+            } else {
+              this.$message.success("启用成功！");
+            }
+          } else {
+            this.$message.error(res.data.message);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    //删除按钮
+    delate(row) {
+      this.$confirm("是否删除该题目?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          apiDelQues(row.id)
+            .then(res => {
+              if (res.data.code == 200) {
+                this.$message.success("删除成功！");
+                this.question();
+              } else {
+                this.$message.error(res.data.message);
+              }
+            })
+            .catch(err => {
+              console.log(err);
+            });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+    },
+    //当前页容量改变事件
     sizeChange(index) {
       this.obj.limit = index;
-      //刷新用户列表
-      this.getUserList();
+      this.question();
     },
-    //改编页码
+    //页改变事件
     currentChange(index) {
       this.obj.page = index;
-      //刷新用户列表
-      this.getUserList();
+      this.question();
+    },
+    //获取企业列表
+    enterprise() {
+      apiEnterList({})
+        .then(res => {
+          this.enterpriseList = res.data.data.items;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    //获取题目列表
+    question() {
+      apiGetQuseList(this.obj)
+        .then(res => {
+          // console.log(res);
+          this.quesList = res.data.data.items;
+          this.total = res.data.data.pagination.total;
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   },
   created() {
-    //页面一加载 获取用户列表
-    this.getUserList();
+    //获取企业列表
+    this.enterprise();
+    //获取题目列表
+    this.question();
   }
 };
 </script>
-<style>
+<style lang="less">
+.ques {
+  .el-form-item {
+    .el-form-item__label {
+      padding: 0 31px 0 21px;
+    }
+    .el-form-item__content {
+      .formItems {
+        width: 150px;
+      }
+    }
+    .myTitle {
+      width: 388px;
+    }
+  }
+  .tableItem {
+    margin-top: 21px;
+    .el-pagination {
+      text-align: center;
+      margin-top: 31px;
+    }
+  }
+}
 </style>
