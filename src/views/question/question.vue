@@ -4,13 +4,8 @@
     <el-card>
       <el-form :inline="true" :model="obj" class="demo-form-inline">
         <el-form-item label="学科">
-          <!-- <el-select class="formItems" v-model="obj.subject" placeholder="请选择学科">
-            <template v-for="(item, index) in subjectList">
-              <el-option :key="index" :label="item.name" :value="item.id"></el-option>
-            </template>
-          </el-select>-->
-          <!-- subject选择框 -->
-          <subjuct v-model="obj.subject"></subjuct>
+          <!-- subject选择框组件 -->
+          <subjectCom v-model="obj.subject"></subjectCom>
         </el-form-item>
         <el-form-item label="阶段">
           <el-select class="formItems" v-model="obj.step">
@@ -20,11 +15,8 @@
           </el-select>
         </el-form-item>
         <el-form-item label="企业">
-          <el-select class="formItems" v-model="obj.enterprise" placeholder="请选择企业">
-            <template v-for="(item, index) in enterpriseList">
-              <el-option :key="index" :label="item.name" :value="item.id"></el-option>
-            </template>
-          </el-select>
+          <!-- enterprise选择框组件 -->
+          <enterpriseCom v-model="obj.enterprise"></enterpriseCom>
         </el-form-item>
         <el-form-item label="题型">
           <el-select class="formItems" v-model="obj.type" placeholder="请选择题型">
@@ -128,19 +120,13 @@
         :total="total"
       ></el-pagination>
     </el-card>
+    {{obj.enterprise}}
   </div>
 </template>
 <script>
-//导入 subjuct 的选择框
-import subjuct from "@/components/subjectSelect.vue";
-//导入 获取企业列表的方法
-import { apiEnterList } from "@/api/enterprise.js";
 //导入 操作题目的api方法
 import { apiGetQuseList, apiSetStatus, apiDelQues } from "@/api/question.js";
 export default {
-  components: {
-    subjuct
-  },
   data() {
     return {
       //头部绑定的数据
@@ -165,9 +151,6 @@ export default {
     };
   },
   methods: {
-    changeSubject(value) {
-      this.obj.subject = value;
-    },
     //搜索事件
     search() {
       //获取满足条件的题目列表
@@ -246,16 +229,6 @@ export default {
       this.obj.page = index;
       this.question();
     },
-    //获取企业列表
-    enterprise() {
-      apiEnterList({})
-        .then(res => {
-          this.enterpriseList = res.data.data.items;
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
     //获取题目列表
     question() {
       apiGetQuseList(this.obj)
@@ -270,8 +243,6 @@ export default {
     }
   },
   created() {
-    //获取企业列表
-    this.enterprise();
     //获取题目列表
     this.question();
   }

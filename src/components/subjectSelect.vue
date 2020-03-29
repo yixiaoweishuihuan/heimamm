@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-select class="formItems" v-model="subject_id" placeholder="请选择学科">
+    <el-select class="formItems" :value="value" @input="v=>{$emit('input',v)}" placeholder="请选择学科">
       <template v-for="(item, index) in subjectList">
         <el-option :key="index" :label="item.name" :value="item.id"></el-option>
       </template>
@@ -14,19 +14,8 @@ export default {
   props: ["value"],
   data() {
     return {
-      subjectList: [],
-      subject_id: ""
+      subjectList: []
     };
-  },
-  watch: {
-    subject_id: function() {
-      this.$emit("input", this.subject_id);
-    },
-    value: function() {
-      if (this.value == "") {
-        this.subject_id = "";
-      }
-    }
   },
   methods: {
     //获取学科列表
@@ -43,7 +32,6 @@ export default {
   created() {
     //获取学科列表
     this.subject();
-    this.subject_id = this.value;
   }
 };
 </script>

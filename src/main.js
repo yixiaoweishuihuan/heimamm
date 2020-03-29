@@ -23,6 +23,14 @@ import store from './store/index'
 //导入过滤器
 import './filters/timeFilter.js'
 
+//导入全局组件
+import subject from './components/subjectSelect.vue'
+import enterprise from './components/enterpriseSelect.vue'
+
+//注册全局组件
+Vue.component('subjectCom',subject);
+Vue.component('enterpriseCom',enterprise);
+
 //创建一个vue实例
 new Vue({
   store,
