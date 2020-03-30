@@ -31,6 +31,16 @@ import enterprise from './components/enterpriseSelect.vue'
 Vue.component('subjectCom',subject);
 Vue.component('enterpriseCom',enterprise);
 
+//导入 富文本编辑器
+import VueQuillEditor from 'vue-quill-editor'
+
+import 'quill/dist/quill.core.css' // import styles
+import 'quill/dist/quill.snow.css' // for snow theme
+import 'quill/dist/quill.bubble.css' // for bubble theme
+ 
+//使用 VueQuillEditor
+Vue.use(VueQuillEditor)
+
 //创建一个vue实例
 new Vue({
   store,

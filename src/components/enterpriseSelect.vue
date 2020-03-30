@@ -1,11 +1,10 @@
 <template>
   <div>
-    <el-select class="formItems" :value="value" @input="v=>{$emit('input',v)}" placeholder="请选择企业">
+    <el-select :value="value" @input="v=>{$emit('input',v)}" placeholder="请选择企业">
       <template v-for="(item, index) in enterpriseList">
         <el-option :key="index" :label="item.name" :value="item.id"></el-option>
       </template>
     </el-select>
-    {{value}}
   </div>
 </template>
 <script>

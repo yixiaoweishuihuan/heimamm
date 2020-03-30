@@ -5,7 +5,7 @@
       <el-form :inline="true" :model="obj" class="demo-form-inline">
         <el-form-item label="学科">
           <!-- subject选择框组件 -->
-          <subjectCom v-model="obj.subject"></subjectCom>
+          <subjectCom class="formItems" v-model="obj.subject"></subjectCom>
         </el-form-item>
         <el-form-item label="阶段">
           <el-select class="formItems" v-model="obj.step">
@@ -16,7 +16,7 @@
         </el-form-item>
         <el-form-item label="企业">
           <!-- enterprise选择框组件 -->
-          <enterpriseCom v-model="obj.enterprise"></enterpriseCom>
+          <enterpriseCom class="formItems" v-model="obj.enterprise"></enterpriseCom>
         </el-form-item>
         <el-form-item label="题型">
           <el-select class="formItems" v-model="obj.type" placeholder="请选择题型">
@@ -72,9 +72,9 @@
       <!-- 表格数据 -->
       <el-table :data="quesList" border style="width: 100%">
         <el-table-column type="index" label="序号"></el-table-column>
-        <el-table-column prop="answer_analyze" label="题目" width="280">
+        <el-table-column prop="title" label="题目" width="280">
           <template slot-scope="scope">
-            <span v-html="scope.row.answer_analyze"></span>
+            <span v-html="scope.row.title"></span>
           </template>
         </el-table-column>
         <el-table-column label="学科.阶段" width="140">
@@ -120,13 +120,19 @@
         :total="total"
       ></el-pagination>
     </el-card>
-    {{obj.enterprise}}
+    <!-- 新增题目弹框 -->
+    <addQuestion ref="addQuestion"></addQuestion>
   </div>
 </template>
 <script>
+//导入 新增/编辑 弹出框
+import addQuestion from './com/addQusetion'
 //导入 操作题目的api方法
 import { apiGetQuseList, apiSetStatus, apiDelQues } from "@/api/question.js";
 export default {
+  components:{
+    addQuestion
+  },
   data() {
     return {
       //头部绑定的数据
@@ -169,7 +175,9 @@ export default {
       this.obj.title = "";
     },
     //新增试题
-    addQues() {},
+    addQues() {
+      this.$refs.addQuestion.dialogFormVisible = true;
+    },
     //编辑按钮
     edit() {},
     //禁用/启用按钮
